@@ -24,6 +24,12 @@ git add . ; git commit -m "快捷上传"; git push origin master
 ```
 ## get-start
 
-##墓碑
+## 墓碑
+### 架构
 
-##雷区
+### 日志
+
+## 雷区
+
+### 1.因麻烦而写的民工三连
+git add . ; git commit -m "快捷上传"; git push origin master
