@@ -9,3 +9,7 @@ git commit -m "XX"
 git statue
 git diff
 git push origin master
+#用户名
+PlagueCat-Miao
+#自动输入密码
+git config  credential.helper store
