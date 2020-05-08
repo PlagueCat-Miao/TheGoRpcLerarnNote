@@ -87,7 +87,7 @@ replace 时如何输入版本号
  - 完整commit号 如：`https://github.com/koding/kite/commit/59a699eb5ebad76fecf2b375b4599650eaf936f3`
     - 就可以输入 `xxxx => github.com/koding/kite 59a699eb5ebad76fecf2b375b4599650eaf936f3`
     - go get 后go.mod更新为  `github.com/koding/kite v0.0.0-20180710021347-baa1a54919e3`
- - 简码commit 如 ![github 网站截图]()
+ - 简码commit 如 ![github 网站截图](./BasicPractice/pic/2.png)
     - 就可以输入 `xxxx => github.com/koding/kite baa1a54`
     - go get 后go.mod更新为 `github.com/koding/kite v0.0.0-20180710021347-baa1a54919e3`
  - branch  如：`https://github.com/koding/kite/tree/fix-etcd-build`
@@ -96,7 +96,7 @@ replace 时如何输入版本号
     -  go get 后go.mod更新为 `github.com/koding/kite v0.0.0-20150902091132-59a699eb5eba`
  - version 如 `https://github.com/gorilla/websocket/releases/tag/v1.4.0` 
     -  就可以输入 `xxxx => github.com/gorilla/websocket v1.4.0`
-    -  也可以是tag 下的 commit 简码 ![github tag 网站截图]() 如`xxxx => github.com/gorilla/websocket 66b9c49`
+    -  也可以是tag 下的 commit 简码 ![github tag 网站截图](./BasicPractice/pic/3.png) 如`xxxx => github.com/gorilla/websocket 66b9c49`
     -  go get 后go.mod更新为 `github.com/gorilla/websocket v1.4.0`
  ### 3. go.mod replace 特例
  1. 某些项目会在项目内以vx文件夹的形式发布高级版本如：`https://github.com/igm/sockjs-go/tree/master/v3`
@@ -115,4 +115,7 @@ replace 时如何输入版本号
   - 当然你也可以去pkg 里去改。
   - 当然你子项目GET不到，不会在主项目里更新require，但在主go.mod里replace生效
   - //是注释 会因为 `go mod tidy` 而被清除 
+ ### 5. git clone 是克隆整个仓库
+  你会得到所有分支 直接 `git branch` 转分支
+   
   
