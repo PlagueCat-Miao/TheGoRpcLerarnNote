@@ -64,10 +64,11 @@ git clone https://github.com/apache/thrift.git
 
 
 ## 墓碑
-### 架构
+### go
+#### thift
 
-### 日志
 
+ 
 ## 雷区
 ### 1.因麻烦而写的民工三连
 git add . ; git commit -m "快捷上传"; git push origin master
@@ -113,7 +114,9 @@ replace 时如何输入版本号
        - go.mod 不可改为`golang.org/x/net/websocket` 因为没有go.mod
        - go get `golang.org/x/net`
        - ~~import 改为`golang.org/x/net/websocket`~~
- 
+  3. 参考网站
+    - [go mod 使用旧版本 版本号指定](https://blog.csdn.net/gs80140/article/details/95320215)
+    - [go1.13 mod 实践和常见问题](https://blog.csdn.net/qq_23109825/article/details/103604685)
  ### 4. go.mod 配置
  对于某个项目，如果需要 replace 、require 只需要在此目录下的go.mod 设计。整个go build过程都生效，
   - 当然你也可以去pkg 里去改。
@@ -123,3 +126,20 @@ replace 时如何输入版本号
   你会得到所有分支 直接 `git branch` 转分支
    
   
+  
+## 扩展阅读
+### rpc
+  - [流行的rpc框架性能测试对比](https://blog.csdn.net/quuqu/article/details/79304614)
+  - [历史-晁岳攀---基于go的 rpc框架实践](https://blog.csdn.net/RA681t58CJxsgCkJ31/article/details/82455716)
+###  redis
+  - [谈谈陌陌争霸在数据库方面踩过的坑( Redis 篇)](https://blog.codingnow.com/2014/03/mmzb_redis.html)
+  - [Redis与数据库数据同步解决方案](https://blog.csdn.net/tennysonsky/article/details/78205453)
+  - [利用redis-sentinel+consul实现redis高可用](https://blog.csdn.net/weixin_33937499/article/details/85087856)
+  - [redis如何实现主从数据的同步](https://www.cnblogs.com/lice-blog/p/11616364.html)
+  - [Redis和数据库同步问题](https://www.cnblogs.com/George1994/p/10601244.html)
+### Consul 
+[Consul 快速入门](https://www.jianshu.com/p/7d20dc58c9fc)
+### 中间件
+  - [什么是中间件？常见中间件有哪些？](http://c.biancheng.net/view/3860.html)
+  - [对新手的初级入门，什么是中间件。](https://blog.csdn.net/intermediat/article/details/96178217)
+  - [微服务（Microservices）和服务网格（Service Mesh）架构概念整理](https://www.cnblogs.com/xishuai/p/microservices-and-service-mesh.html)
