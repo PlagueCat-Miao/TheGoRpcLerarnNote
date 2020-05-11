@@ -99,10 +99,14 @@ replace 时如何输入版本号
     -  也可以是tag 下的 commit 简码 ![github tag 网站截图](./BasicPractice/pic/3.png) 如`xxxx => github.com/gorilla/websocket 66b9c49`
     -  go get 后go.mod更新为 `github.com/gorilla/websocket v1.4.0`
  ### 3. go.mod replace 特例
- 1. 某些项目会在项目内以vx文件夹的形式发布高级版本如：`https://github.com/igm/sockjs-go/tree/master/v3`
-    -  首先这个 vx文件下下有独立的go.mod
+ 1. 某些项目发布 vx 高级版本如：`https://github.com/igm/sockjs-go/tree/master/v3`
+    -  确定发布版本
+      - 存在vx文件夹，其下有独立的go.mod，且module含有vx如:`module github.com/igm/sockjs-go/v3`
+      - or 项目打有标签/分支 如`v3` 其下go.mod的module含有vx，如:`module github.com/igm/sockjs-go/v3`
     -  如果要 import `github.com/igm/sockjs-go/v3`
-    -  如果要 replace(commit简码) `github.com/igm/sockjs-go v2.0.1+incompatible => github.com/igm/sockjs-go/v3 50a6500` 
+    -  如果要 replace(commit简码) `XXX => github.com/igm/sockjs-go/v3 50a6500` 注意这个页面的go.mod 应含有`module github.com/igm/sockjs-go/v3`如：
+    ![github tag 网站截图](./BasicPractice/pic/4.png)
+    
  2. `code.google.com/` 失败
     - 其中`p/go.net`路径下 已被转移`golang.org/x/net`
     - 如`code.google.com/p/go.net/websocket`
