@@ -1,3 +1,6 @@
+all :
+	make thrift
 
 thrift :
-    thrift -r --gen go idls/echo.thrift
+	thrift -r --gen go idls/echo.thrift
+
