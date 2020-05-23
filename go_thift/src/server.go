@@ -1,4 +1,4 @@
-package main
+package src
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,7 +26,7 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
-func runServer(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
+func RunServer(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
 	var transport thrift.TServerTransport
 	var err error
 	if secure {

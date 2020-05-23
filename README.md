@@ -129,9 +129,8 @@ replace 时如何输入版本号
   你会得到所有分支 直接 `git branch` 转分支
    
  ### 6. thrift 版本与GO不匹配
- > not enough arguments in call to oprot.Flush
- 
- 我决定使用 [Thrift version 0.9.2](http://archive.apache.org/dist/thrift/0.9.2/)  
+ 一句话 官方大法好[thrift 0.13.0](http://thrift.apache.org/tutorial/go)
+ 里面实例中`tutorial` `shared` 是gen-go下的路径
   
 ## 扩展阅读
 ### rpc

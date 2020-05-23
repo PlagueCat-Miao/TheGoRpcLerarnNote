@@ -22,6 +22,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/go_thift/src"
 	"github.com/apache/thrift/lib/go/thrift"
 	"os"
 )
@@ -71,11 +72,11 @@ func main() {
 	}
 
 	if *server {
-		if err := runServer(transportFactory, protocolFactory, *addr, *secure); err != nil {
+		if err := src.RunServer(transportFactory, protocolFactory, *addr, *secure); err != nil {
 			fmt.Println("error running server:", err)
 		}
 	} else {
-		if err := runClient(transportFactory, protocolFactory, *addr, *secure); err != nil {
+		if err := src.RunClient(transportFactory, protocolFactory, *addr, *secure); err != nil {
 			fmt.Println("error running client:", err)
 		}
 	}

@@ -1,4 +1,4 @@
-package main
+package src
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -30,7 +30,7 @@ import (
 
 var defaultCtx = context.Background()
 
-func handleClient(client *tutorial.CalculatorClient) (err error) {
+func HandleClient(client *tutorial.CalculatorClient) (err error) {
 	client.Ping(defaultCtx)
 	fmt.Println("ping()")
 
@@ -79,7 +79,7 @@ func handleClient(client *tutorial.CalculatorClient) (err error) {
 	return err
 }
 
-func runClient(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
+func RunClient(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {
 	var transport thrift.TTransport
 	var err error
 	if secure {
@@ -103,5 +103,5 @@ func runClient(transportFactory thrift.TTransportFactory, protocolFactory thrift
 	}
 	iprot := protocolFactory.GetProtocol(transport)
 	oprot := protocolFactory.GetProtocol(transport)
-	return handleClient(tutorial.NewCalculatorClient(thrift.NewTStandardClient(iprot, oprot)))
+	return HandleClient(tutorial.NewCalculatorClient(thrift.NewTStandardClient(iprot, oprot)))
 }
