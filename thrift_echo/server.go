@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	//"context"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
 
@@ -13,7 +14,7 @@ import (
 type EchoServer struct {
 }
 
-func (e *EchoServer) Echo(ctx context.Context,req *echo.EchoReq) (*echo.EchoRes, error) {
+func (e *EchoServer) Echo(req *echo.EchoReq) (*echo.EchoRes, error) {
 	fmt.Printf("message from client: %v\n", req.GetMsg())
 
 	resp := &echo.EchoRes{
@@ -31,6 +32,7 @@ func main() {
 
 	handler := &EchoServer{}
 	processor := echo.NewEchoProcessor(handler)
+	
 	//需要与客户端一致
 	transportFactory := thrift.NewTBufferedTransportFactory(8192)
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()//需要与客户端一致

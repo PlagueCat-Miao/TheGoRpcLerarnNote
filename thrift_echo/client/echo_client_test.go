@@ -24,15 +24,15 @@ func TestClient(t *testing.T) {
 		os.Exit(1)
 	}
 
-    // plan B
-	iProtocol := protocolFactory.GetProtocol(transport)
-	oProtocol := protocolFactory.GetProtocol(transport)
-	tClient := thrift.NewTStandardClient(iProtocol, oProtocol)
-	client := echo.NewEchoClient(tClient)
-	//plan A Deprecated
-	//transportFactory := thrift.NewTBufferedTransportFactory(8192)
-	//useTransport, err := transportFactory.GetTransport(transport)
-	//client := echo.NewEchoClientFactory(useTransport, protocolFactory)
+    // plan B 0.11.0
+	//iProtocol := protocolFactory.GetProtocol(transport)
+	//oProtocol := protocolFactory.GetProtocol(transport)
+	//tClient := thrift.NewTStandardClient(iProtocol, oProtocol)
+	//client := echo.NewEchoClient(tClient)
+	//plan A 0.9.2
+	transportFactory := thrift.NewTBufferedTransportFactory(8192)
+	useTransport, err := transportFactory.GetTransport(transport)
+	client := echo.NewEchoClientFactory(useTransport, protocolFactory)
 	if err := transport.Open(); err != nil {
 		fmt.Fprintln(os.Stderr, "Error opening socket to 127.0.0.1:9898", " ", err)
 		os.Exit(1)
