@@ -14,16 +14,22 @@ import (
 	"strconv"
 	"strings"
 	"github.com/apache/thrift/lib/go/thrift"
-	"echo"
+	"shared"
+	"tutorial"
 )
 
-var _ = echo.GoUnusedProtection__
+var _ = shared.GoUnusedProtection__
+var _ = tutorial.GoUnusedProtection__
 
 func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  EchoRes echo(EchoReq req)")
+  fmt.Fprintln(os.Stderr, "  void ping()")
+  fmt.Fprintln(os.Stderr, "  i32 add(i32 num1, i32 num2)")
+  fmt.Fprintln(os.Stderr, "  i32 calculate(i32 logid, Work w)")
+  fmt.Fprintln(os.Stderr, "  void zip()")
+  fmt.Fprintln(os.Stderr, "  SharedStruct getStruct(i32 key)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -138,36 +144,96 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := echo.NewEchoClient(thrift.NewTStandardClient(iprot, oprot))
+  client := tutorial.NewCalculatorClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "echo":
-    if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "Echo requires 1 args")
+  case "ping":
+    if flag.NArg() - 1 != 0 {
+      fmt.Fprintln(os.Stderr, "Ping requires 0 args")
       flag.Usage()
     }
-    arg4 := flag.Arg(1)
-    mbTrans5 := thrift.NewTMemoryBufferLen(len(arg4))
-    defer mbTrans5.Close()
-    _, err6 := mbTrans5.WriteString(arg4)
-    if err6 != nil {
+    fmt.Print(client.Ping(context.Background()))
+    fmt.Print("\n")
+    break
+  case "add":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "Add requires 2 args")
+      flag.Usage()
+    }
+    tmp0, err8 := (strconv.Atoi(flag.Arg(1)))
+    if err8 != nil {
       Usage()
       return
     }
-    factory7 := thrift.NewTJSONProtocolFactory()
-    jsProt8 := factory7.GetProtocol(mbTrans5)
-    argvalue0 := echo.NewEchoReq()
-    err9 := argvalue0.Read(jsProt8)
+    argvalue0 := int32(tmp0)
+    value0 := argvalue0
+    tmp1, err9 := (strconv.Atoi(flag.Arg(2)))
     if err9 != nil {
       Usage()
       return
     }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.Add(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "calculate":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "Calculate requires 2 args")
+      flag.Usage()
+    }
+    tmp0, err10 := (strconv.Atoi(flag.Arg(1)))
+    if err10 != nil {
+      Usage()
+      return
+    }
+    argvalue0 := int32(tmp0)
     value0 := argvalue0
-    fmt.Print(client.Echo(context.Background(), value0))
+    arg11 := flag.Arg(2)
+    mbTrans12 := thrift.NewTMemoryBufferLen(len(arg11))
+    defer mbTrans12.Close()
+    _, err13 := mbTrans12.WriteString(arg11)
+    if err13 != nil {
+      Usage()
+      return
+    }
+    factory14 := thrift.NewTJSONProtocolFactory()
+    jsProt15 := factory14.GetProtocol(mbTrans12)
+    argvalue1 := tutorial.NewWork()
+    err16 := argvalue1.Read(jsProt15)
+    if err16 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.Calculate(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "zip":
+    if flag.NArg() - 1 != 0 {
+      fmt.Fprintln(os.Stderr, "Zip requires 0 args")
+      flag.Usage()
+    }
+    fmt.Print(client.Zip(context.Background()))
+    fmt.Print("\n")
+    break
+  case "getStruct":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "GetStruct requires 1 args")
+      flag.Usage()
+    }
+    tmp0, err17 := (strconv.Atoi(flag.Arg(1)))
+    if err17 != nil {
+      Usage()
+      return
+    }
+    argvalue0 := int32(tmp0)
+    value0 := argvalue0
+    fmt.Print(client.GetStruct(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":
