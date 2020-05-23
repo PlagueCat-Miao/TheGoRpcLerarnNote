@@ -66,7 +66,10 @@ git clone https://github.com/apache/thrift.git
 ## 墓碑
 ### go
 #### thift
-
+##### demo教程
+-[Go thrift使用举例](https://blog.csdn.net/lanyang123456/article/details/80372977)
+##### 参数总结
+-[golang thrift 总结一下网络上的一些坑](https://www.cnblogs.com/ka200812/p/5865213.html)
 
  
 ## 雷区
@@ -125,7 +128,10 @@ replace 时如何输入版本号
  ### 5. git clone 是克隆整个仓库
   你会得到所有分支 直接 `git branch` 转分支
    
-  
+ ### 6. thrift 版本与GO不匹配
+ > not enough arguments in call to oprot.Flush
+ 
+ 我决定使用 [Thrift version 0.9.2](http://archive.apache.org/dist/thrift/0.9.2/)  
   
 ## 扩展阅读
 ### rpc

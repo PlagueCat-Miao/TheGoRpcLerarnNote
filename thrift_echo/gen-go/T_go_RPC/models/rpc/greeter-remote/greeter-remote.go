@@ -14,16 +14,17 @@ import (
 	"strconv"
 	"strings"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/go_thift/gen-go/shared"
+	"T_go_RPC/models/rpc"
 )
 
-var _ = shared.GoUnusedProtection__
+var _ = rpc.GoUnusedProtection__
 
 func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  SharedStruct getStruct(i32 key)")
+  fmt.Fprintln(os.Stderr, "  Response SayHello(User user)")
+  fmt.Fprintln(os.Stderr, "  Response GetUser(i32 uid)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -138,26 +139,51 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := shared.NewSharedServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := rpc.NewGreeterClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "getStruct":
+  case "SayHello":
     if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "GetStruct requires 1 args")
+      fmt.Fprintln(os.Stderr, "SayHello requires 1 args")
       flag.Usage()
     }
-    tmp0, err4 := (strconv.Atoi(flag.Arg(1)))
-    if err4 != nil {
+    arg8 := flag.Arg(1)
+    mbTrans9 := thrift.NewTMemoryBufferLen(len(arg8))
+    defer mbTrans9.Close()
+    _, err10 := mbTrans9.WriteString(arg8)
+    if err10 != nil {
+      Usage()
+      return
+    }
+    factory11 := thrift.NewTJSONProtocolFactory()
+    jsProt12 := factory11.GetProtocol(mbTrans9)
+    argvalue0 := rpc.NewUser()
+    err13 := argvalue0.Read(jsProt12)
+    if err13 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.SayHello(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "GetUser":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "GetUser requires 1 args")
+      flag.Usage()
+    }
+    tmp0, err14 := (strconv.Atoi(flag.Arg(1)))
+    if err14 != nil {
       Usage()
       return
     }
     argvalue0 := int32(tmp0)
     value0 := argvalue0
-    fmt.Print(client.GetStruct(context.Background(), value0))
+    fmt.Print(client.GetUser(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":

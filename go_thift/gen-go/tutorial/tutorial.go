@@ -11,7 +11,7 @@ import(
 	"errors"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"shared"
+	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/go_thift/gen-go/shared"
 
 )
 

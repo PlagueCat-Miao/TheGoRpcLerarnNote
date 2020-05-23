@@ -2,48 +2,102 @@ package main
 
 import (
 	"context"
-	//"context"
+	"encoding/json"
+	"flag"
 	"fmt"
-	"git.apache.org/thrift.git/lib/go/thrift"
-
-	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/thrift_echo/gen-go/echo"
-
+	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/thrift_echo/gen-go/T_go_RPC/models/rpc"
+	"github.com/apache/thrift/lib/go/thrift"
+	"github.com/astaxie/beego"
+	"os"
 )
 
-
-type EchoServer struct {
+func Usage() {
+	fmt.Fprint(os.Stderr, "Usage of ", os.Args[0], ":\n")
+	flag.PrintDefaults()
+	fmt.Fprint(os.Stderr, "\n")
 }
 
-func (e *EchoServer) Echo(req *echo.EchoReq) (*echo.EchoRes, error) {
-	fmt.Printf("message from client: %v\n", req.GetMsg())
+//定义服务
+type Greeter struct {
+}
 
-	resp := &echo.EchoRes{
-		Msg: "success",
-	}
+//实现IDL里定义的接口
+//SayHello
+func (this *Greeter) SayHello(ctx context.Context, u *rpc.User) (r *rpc.Response, err error) {
+	strJson, _ := json.Marshal(u)
+	return &rpc.Response{ErrCode: 0, ErrMsg: "success", Data: map[string]string{"User:": string(strJson)}}, nil
+}
 
-	return resp, nil
+//GetUser
+func (this *Greeter) GetUser(ctx context.Context, uid int32) (r *rpc.Response, err error) {
+	return &rpc.Response{ErrCode: 1, ErrMsg: "this user not exist."}, nil
 }
 
 func main() {
-	transport, err := thrift.NewTServerSocket(":9898")
+
+	//命令行参数
+	flag.Usage = Usage
+	protocol := flag.String("P", "binary", "Specify the protocol (binary, compact, json, simplejson)")
+	framed := flag.Bool("framed", false, "Use framed transport")
+	buffered := flag.Bool("buffered", false, "Use buffered transport")
+	addr := flag.String("addr", "localhost:9090", "Address to listen to")
+
+	flag.Parse()
+
+	//protocol
+	var protocolFactory thrift.TProtocolFactory
+	switch *protocol {
+	case "compact":
+		protocolFactory = thrift.NewTCompactProtocolFactory()
+	case "simplejson":
+		protocolFactory = thrift.NewTSimpleJSONProtocolFactory()
+	case "json":
+		protocolFactory = thrift.NewTJSONProtocolFactory()
+	case "binary", "":
+		protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()
+	default:
+		fmt.Fprint(os.Stderr, "Invalid protocol specified", protocol, "\n")
+		Usage()
+		os.Exit(1)
+	}
+
+	//buffered
+	var transportFactory thrift.TTransportFactory
+	if *buffered {
+		transportFactory = thrift.NewTBufferedTransportFactory(8192)
+	} else {
+		transportFactory = thrift.NewTTransportFactory()
+	}
+
+	//framed
+	if *framed {
+		transportFactory = thrift.NewTFramedTransportFactory(transportFactory)
+	}
+
+	//handler
+	handler := &Greeter{}
+
+	//transport,no secure
+	var err error
+	var transport thrift.TServerTransport
+	transport, err = thrift.NewTServerSocket(*addr)
 	if err != nil {
-		panic(err)
+		fmt.Println("error running server:", err)
 	}
 
-	handler := &EchoServer{}
-	processor := echo.NewEchoProcessor(handler)
-	
-	//需要与客户端一致
-	transportFactory := thrift.NewTBufferedTransportFactory(8192)
-	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()//需要与客户端一致
-	server := thrift.NewTSimpleServer4(
-		processor,
-		transport,
-		transportFactory,
-		protocolFactory,
-	)
+	//processor
+	processor := rpc.NewGreeterProcessor(handler)
 
-	if err := server.Serve(); err != nil {
-		panic(err)
+	fmt.Println("Starting the simple server... on ", *addr)
+
+	//start tcp server
+	server := thrift.NewTSimpleServer4(processor, transport, transportFactory, protocolFactory)
+	err = server.Serve()
+
+	if err != nil {
+		fmt.Println("error running server:", err)
 	}
+
+
+	beego.Run()
 }

@@ -14,8 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"github.com/apache/thrift/lib/go/thrift"
-	"shared"
-	"tutorial"
+	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/go_thift/gen-go/shared"
+	"github.com/PlagueCat-Miao/TheGoRpcLerarnNote/go_thift/gen-go/tutorial"
 )
 
 var _ = shared.GoUnusedProtection__
