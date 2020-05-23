@@ -129,8 +129,9 @@ replace 时如何输入版本号
   你会得到所有分支 直接 `git branch` 转分支
    
  ### 6. thrift 版本与GO不匹配
- 一句话 官方大法好[thrift 0.13.0](http://thrift.apache.org/tutorial/go)
- 里面实例中`tutorial` `shared` 是gen-go下的路径
+ - 一句话 官方大法好[thrift 0.13.0](http://thrift.apache.org/tutorial/go)
+   - 里面实例中`tutorial` `shared` 是gen-go下的路径
+ - [thrift解析](https://www.cnblogs.com/ka200812/p/5865213.html)
   
 ## 扩展阅读
 ### rpc
